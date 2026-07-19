@@ -2,7 +2,10 @@
 <html lang="ru">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Prism — Контент и Лендинги, Которые Увеличивают Продажи</title>
     <meta
       name="description"
@@ -41,7 +44,7 @@
         <div class="header-cta">
           <!-- ВОТ ТУТ БЫЛА ОШИБКА: ТЕПЕРЬ ТЕГ </a> ЗАКРЫТ -->
           <a
-            href="https://t.me/prism_agency"
+            href="https://t.me/rosewood_str"
             class="btn btn-ghost btn-small"
             target="_blank"
             rel="noopener"
@@ -66,7 +69,7 @@
       <a href="#testimonials">Отзывы</a>
       <a href="#contact">Контакты</a>
       <a
-        href="https://t.me/prism_agency"
+        href="https://t.me/rosewood_str"
         class="btn btn-primary"
         target="_blank"
         rel="noopener"
@@ -93,7 +96,7 @@
             </p>
             <div class="hero-actions">
               <a
-                href="https://t.me/prism_agency"
+                href="https://t.me/rosewood_str"
                 class="btn btn-primary"
                 target="_blank"
                 rel="noopener"
@@ -386,9 +389,9 @@
             ожидания ответа на почту.
           </p>
           <div class="cta-panel">
-            <span>@prism_agency</span>
+            <span>@rosewood_str</span>
             <a
-              href="https://t.me/prism_agency"
+              href="https://t.me/rosewood_str"
               class="btn btn-primary"
               target="_blank"
               rel="noopener"
@@ -429,16 +432,16 @@
             <ul>
               <li>
                 <a
-                  href="https://t.me/prism_agency"
+                  href="https://t.me/rosewood_str"
                   target="_blank"
                   rel="noopener"
-                  >Telegram: @prism_agency</a
+                  >Telegram: @rosewood_str</a
                 >
               </li>
             </ul>
             <div class="footer-socials">
               <a
-                href="https://t.me/prism_agency"
+                href="https://t.me/rosewood_str"
                 target="_blank"
                 rel="noopener"
                 aria-label="Telegram"
@@ -487,7 +490,7 @@
     <!-- ПЛАВАЮЩАЯ КНОПКА TELEGRAM -->
     <div class="floating-panel">
       <a
-        href="https://t.me/prism_agency"
+        href="https://t.me/rosewood_str"
         target="_blank"
         rel="noopener"
         aria-label="Telegram"
@@ -498,5 +501,13 @@
 
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
+    <script>
+      document.addEventListener("mousemove", (e) => {
+        const bg = document.querySelector(".bg-atmosphere");
+        const x = (window.innerWidth - e.pageX * 2) / 100;
+        const y = (window.innerHeight - e.pageY * 2) / 100;
+        bg.style.transform = `translate(${x}px, ${y}px)`;
+      });
+    </script>
   </body>
 </html>

@@ -15,18 +15,18 @@
   --text-muted: #8b8a94;
   --text-faint: #55545e;
 
-  --accent-magenta: #85c1fe;
-  --accent-teal: #85c1fe;
-  --accent-violet: #85c1fe;
+  --accent-magenta: #6fa1d3;
+  --accent-teal: #6fa1d3;
+  --accent-violet: #6fa1d3;
 
   --glass-bg: rgba(255, 255, 255, 0.025);
   --glass-bg-strong: rgba(255, 255, 255, 0.045);
   --glass-border: rgba(255, 255, 255, 0.09);
   --glass-border-strong: rgba(255, 255, 255, 0.16);
 
-  --radius-s: 4px;
-  --radius-m: 6px;
-  --radius-l: 8px;
+  --radius-s: 12px;
+  --radius-m: 16px;
+  --radius-l: 20px;
 
   --font-display: "Unbounded", "Manrope", sans-serif;
   --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
@@ -34,6 +34,7 @@
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --container: var(--container-width);
+  --btn-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
 }
 
 * {
@@ -41,6 +42,10 @@
   margin: 0;
   padding: 0;
   text-decoration: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 html {
@@ -73,6 +78,12 @@ body {
   position: relative;
   width: 100%;
   height: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 /* ===== BACKGROUND ===== */
@@ -87,7 +98,7 @@ body {
     linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
     url("../assets/background.png") no-repeat top left;
   background-size: cover;
-
+  transition: transform 0.01s linear;
   /* АНИМАЦИЯ: Медленное "дыхание" (scale) */
   animation: breathe-bg 20s ease-in-out infinite alternate;
 }
@@ -160,7 +171,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 400;
   line-height: 1.08;
   letter-spacing: -0.01em;
 }
@@ -195,7 +206,7 @@ p {
   font-weight: 600;
   font-size: 15px;
   padding: 15px 28px;
-  border-radius: 999px;
+  border-radius: var(--radius-m);
   border: 1px solid transparent;
   cursor: pointer;
   transition:
@@ -216,7 +227,7 @@ p {
     var(--accent-magenta)
   );
   color: #fff;
-  box-shadow: 0 8px 30px -8px rgba(91, 75, 196, 0.4);
+  box-shadow: var(--btn-shadow);
 }
 .btn-primary:hover {
   transform: translateY(-2px);
@@ -298,7 +309,7 @@ p {
 .main-nav a {
   text-decoration: none;
   padding: 8px 14px;
-  border-radius: 999px;
+  border-radius: var(--radius-m);
   color: var(--text-muted);
   transition:
     color 0.3s var(--ease),
@@ -474,7 +485,7 @@ p {
 
 /* ===== SECTIONS ===== */
 .section {
-  padding: 120px 0;
+  padding: 160px 0;
   border-top: 1px solid var(--glass-border);
 }
 .section-head {
@@ -496,10 +507,10 @@ p {
 }
 .tier-card {
   position: relative;
-  padding: 32px 28px;
+  padding: 48px 32px;
   border-radius: var(--radius-m);
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   transition:
@@ -725,7 +736,7 @@ p {
   gap: 18px;
 }
 .testimonial-card {
-  padding: 30px 28px;
+  padding: 48px 32px;
   border-radius: var(--radius-m);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
@@ -945,19 +956,20 @@ p {
   display: block;
 }
 
-/* REVEAL ANIMATION */
+/* ===== ПРЕМИУМ АНИМАЦИЯ ПОЯВЛЕНИЯ ===== */
 [data-reveal] {
   opacity: 0;
-  transform: translateY(24px);
-  transition:
-    opacity 0.8s var(--ease),
-    transform 0.8s var(--ease);
-}
-[data-reveal].is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  /* Изначально элемент сдвинут вниз и чуть сжат (эффект глубины) */
+  transform: translateY(40px) scale(0.96);
+  /* Используем эластичную кривую для дорогого ощущения "пружины" */
+  transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+[data-reveal].is-visible {
+  opacity: 1;
+  /* Элемент встает на место и возвращает свой нормальный размер */
+  transform: translateY(0) scale(1);
+}
 /* MOBILE DRAWER */
 .mobile-drawer {
   position: fixed;
@@ -1118,4 +1130,11 @@ p {
     width: 20px;
     height: 20px;
   }
+}
+.tier-card:hover,
+.case-card:hover {
+  transform: translateY(-6px) scale(1.015); /* Всплывает и чуть увеличивается */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 20px 40px rgba(0, 0, 0, 0.4);
 }

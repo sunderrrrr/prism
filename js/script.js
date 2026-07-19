@@ -51,7 +51,7 @@
           }
         });
       },
-      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" }
+      { threshold: 0.15, rootMargin: "0px 0px -60px 0px" },
     );
     revealEls.forEach((el) => io.observe(el));
   } else {
@@ -112,7 +112,7 @@
             <span class="t-role">${t.role}</span>
           </div>
         </article>
-      `
+      `,
     ).join("");
   }
   renderTestimonials();
