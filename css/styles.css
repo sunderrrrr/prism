@@ -1,9 +1,13 @@
-/* ==========================================================================
-   PRISM — stylesheet
-   Dark void background, glass panels, monospace micro-labels.
-   ========================================================================== */
-
 :root {
+  /* ====================================================================
+     👇 НАСТРОЙКИ САЙТА
+     ==================================================================== */
+  --base-font-size: 18px;
+  --container-width: 1180px;
+  --desktop-prism-max: 700px;
+  --mobile-prism-size: 340px;
+  /* ==================================================================== */
+
   --bg: #0a0a0e;
   --bg-soft: #0e0e13;
   --bg-elevated: #131318;
@@ -11,10 +15,9 @@
   --text-muted: #8b8a94;
   --text-faint: #55545e;
 
-  --accent-magenta: #7e93a8;
-  --accent-teal: #7e93a8;
-  --accent-violet: #7e93a8;
-  --accent-cold: #7e93a8;
+  --accent-magenta: #85c1fe;
+  --accent-teal: #85c1fe;
+  --accent-violet: #85c1fe;
 
   --glass-bg: rgba(255, 255, 255, 0.025);
   --glass-bg-strong: rgba(255, 255, 255, 0.045);
@@ -30,8 +33,7 @@
   --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
 
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
-  --base-font-size: 18px;
-  --container: 1180px;
+  --container: var(--container-width);
 }
 
 * {
@@ -43,6 +45,8 @@
 
 html {
   scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -63,24 +67,36 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--base-font-size);
   line-height: 1.6;
   overflow-x: hidden;
   position: relative;
+  width: 100%;
+  height: 100%;
 }
 
-/* ===== BACKGROUND & LIGHT RAYS ===== */
+/* ===== BACKGROUND ===== */
 .bg-atmosphere {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
   overflow: hidden;
-  background: linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.04) 0%,
-    transparent 40%
-  );
+
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    url("../assets/background.png") no-repeat top left;
+  background-size: cover;
+
+  /* АНИМАЦИЯ: Медленное "дыхание" (scale) */
+  animation: breathe-bg 20s ease-in-out infinite alternate;
+}
+
+/* Предотвращаем дерганье в Сафари */
+.bg-atmosphere {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .bg-atmosphere::before {
@@ -100,97 +116,14 @@ body {
   filter: blur(10px);
 }
 
-.bg-atmosphere::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black, transparent);
-}
-
-.light-rays {
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 80%;
-  height: 150vh;
-  overflow: visible;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.ray {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 20px;
-  height: 500px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.9) 0%,
-    rgba(255, 220, 180, 0.6) 40%,
-    transparent 100%
-  );
-  transform-origin: top left;
-  transform: rotate(var(--ray-angle, 0deg));
-  filter: blur(20px) drop-shadow(0 0 120px rgba(255, 255, 255, 0.3));
-  mix-blend-mode: screen;
-  opacity: 0.3;
-  animation: ray-sway 15s ease-in-out infinite;
-}
-
-.ray:nth-child(1) {
-  height: 650px;
-  filter: blur(25px) drop-shadow(0 0 150px rgba(255, 255, 255, 0.2));
-  opacity: 0.2;
-}
-.ray:nth-child(2) {
-  height: 550px;
-  filter: blur(15px) drop-shadow(0 0 100px rgba(255, 255, 255, 0.3));
-  opacity: 0.4;
-  animation-delay: -3s;
-}
-.ray:nth-child(3) {
-  height: 700px;
-  filter: blur(30px) drop-shadow(0 0 180px rgba(255, 255, 255, 0.2));
-  opacity: 0.25;
-  animation-delay: -6s;
-}
-.ray:nth-child(4) {
-  height: 900px;
-  filter: blur(18px) drop-shadow(0 0 140px rgba(255, 255, 255, 0.35));
-  opacity: 0.5;
-  animation-delay: -9s;
-}
-.ray:nth-child(5) {
-  height: 580px;
-  filter: blur(22px) drop-shadow(0 0 130px rgba(255, 255, 255, 0.25));
-  opacity: 0.3;
-  animation-delay: -12s;
-}
-
-@keyframes ray-sway {
-  0%,
+@keyframes breathe-bg {
+  0% {
+    transform: scale(1);
+  }
   100% {
-    opacity: 0.3;
-    transform: rotate(var(--ray-angle, 0deg));
-  }
-  50% {
-    opacity: 0.5;
-    transform: rotate(calc(var(--ray-angle, 0deg) + 0.8deg));
+    transform: scale(1.05); /* Увеличиваем картинку на 3% */
   }
 }
-
-@media (prefers-reduced-motion: reduce) {
-  .ray {
-    animation: none;
-    opacity: 0.35;
-  }
-}
-
 img {
   max-width: 100%;
   display: block;
@@ -468,17 +401,11 @@ p {
 .hero-copy .lede {
   margin-bottom: 34px;
 }
-
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 18px;
-}
-.hero-actions .micro {
-  font-family: var(--font-mono);
-  font-size: 12px;
-  color: var(--text-faint);
 }
 
 /* VISUAL */
@@ -489,8 +416,8 @@ p {
   justify-content: center;
 }
 .hero-visual img {
-  width: 450px;
-  height: 450px;
+  width: 500px;
+  aspect-ratio: 1/1;
   border-radius: var(--radius-l);
   object-fit: cover;
 }
@@ -698,6 +625,13 @@ p {
 }
 
 /* CAROUSEL */
+.carousel-wrap {
+  position: relative;
+  width: 100%;
+  overflow: visible; /* ВАЖНО: Разрешаем карточкам вылетать за пределы */
+  padding: 10px 0; /* Небольшой отступ сверху и снизу, чтобы тень не обрезалась */
+}
+
 .carousel-track {
   display: flex;
   gap: 18px;
@@ -709,6 +643,7 @@ p {
 .carousel-track::-webkit-scrollbar {
   display: none;
 }
+
 .case-card {
   flex: 0 0 auto;
   width: min(320px, 82vw);
@@ -783,7 +718,6 @@ p {
   background: var(--glass-bg-strong);
   border-color: var(--glass-border-strong);
 }
-
 /* TESTIMONIALS */
 .testimonial-grid {
   display: grid;
@@ -889,6 +823,8 @@ p {
 
 /* FOOTER */
 .site-footer {
+  position: relative; /* ← ДОБАВИТЬ */
+  z-index: 1; /* ← ДОБАВИТЬ */
   border-top: 1px solid var(--glass-border);
   padding: 64px 0 32px;
 }
@@ -970,17 +906,12 @@ p {
 
 /* FLOATING PANEL */
 .floating-panel {
-  display: none;
   position: fixed;
   right: 24px;
   bottom: 24px;
-  z-index: 90;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 10px;
+  z-index: 999;
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(12px) scale(0.9);
   pointer-events: none;
   transition:
     opacity 0.4s var(--ease),
@@ -988,12 +919,30 @@ p {
 }
 .floating-panel.is-visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   pointer-events: auto;
 }
-.floating-panel .btn-primary {
-  display: none;
-  box-shadow: 0 10px 32px -8px rgba(91, 75, 196, 0.45);
+.floating-panel a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background-color: #24a1de;
+  box-shadow: 0 8px 24px rgba(36, 161, 222, 0.4);
+  transition:
+    transform 0.3s var(--ease),
+    box-shadow 0.3s var(--ease);
+}
+.floating-panel a:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 32px rgba(36, 161, 222, 0.6);
+}
+.floating-panel img {
+  width: 100%;
+
+  display: block;
 }
 
 /* REVEAL ANIMATION */
@@ -1032,27 +981,26 @@ p {
 }
 .mobile-drawer a {
   font-family: var(--font-display);
-  font-size: 1.7rem;
-  padding: 14px 0;
+  font-size: 1.4rem;
+  padding: 10px 0;
   color: var(--text);
 }
 .mobile-drawer .btn {
-  margin-top: 24px;
+  margin-top: 18px;
+  font-size: 14px;
+  padding: 10px 20px;
 }
 
 /* ==========================================================================
-   RESPONSIVE (ЕДИНЫЙ СТИЛЬ)
+   RESPONSIVE
    ========================================================================== */
 
-/* Tablets & Small Laptops */
 @media (max-width: 1024px) {
   .hero-visual img {
-    width: 350px;
-    height: 350px;
+    max-width: 420px;
   }
 }
 
-/* Large Mobile & Tablets (980px and below) */
 @media (max-width: 980px) {
   .main-nav {
     display: none;
@@ -1069,12 +1017,11 @@ p {
     margin: 0 auto;
   }
   .hero-visual img {
-    width: 260px;
-    height: 260px;
+    max-width: 360px;
   }
   .prism-glow {
-    width: 200px;
-    height: 200px;
+    width: 260px;
+    height: 260px;
   }
   .tier-grid {
     grid-template-columns: 1fr;
@@ -1096,22 +1043,7 @@ p {
   }
 }
 
-/* Phones (767px and below) */
 @media (max-width: 767px) {
-  /* Rays adjustment */
-  .light-rays {
-    width: 100%;
-    height: 100vh;
-    top: -10%;
-    left: -30%;
-  }
-  .ray {
-    height: 300px !important;
-    width: 15px !important;
-    filter: blur(12px) drop-shadow(0 0 60px rgba(255, 255, 255, 0.2)) !important;
-  }
-
-  /* Container & Spacing */
   .container {
     padding: 0 16px;
   }
@@ -1136,7 +1068,6 @@ p {
     font-size: 1.4rem;
   }
 
-  /* Buttons & Actions */
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
@@ -1148,15 +1079,12 @@ p {
     padding: 14px 20px;
   }
 
-  /* Layouts */
   .process-grid {
     grid-template-columns: 1fr;
   }
   .section-head {
     margin-bottom: 32px;
   }
-
-  /* Footer */
   .footer-top {
     gap: 24px;
   }
@@ -1165,23 +1093,29 @@ p {
     text-align: center;
     gap: 8px;
   }
-  .floating-panel .btn span.long-label {
-    display: none;
-  }
 }
 
-/* Very Small Phones (480px and below) */
 @media (max-width: 480px) {
-  /* УВЕЛИЧИЛИ ПРИЗМУ НА ТЕЛЕФОНЕ (было 180px, стало 280px) */
   .hero-visual img {
-    width: 280px;
-    height: 280px;
+    max-width: var(--mobile-prism-size);
   }
   .prism-glow {
-    width: 240px;
-    height: 240px;
+    width: 220px;
+    height: 220px;
   }
   .brand span {
     font-size: 15px;
+  }
+  .floating-panel {
+    right: 16px;
+    bottom: 16px;
+  }
+  .floating-panel a {
+    width: 48px;
+    height: 48px;
+  }
+  .floating-panel img {
+    width: 20px;
+    height: 20px;
   }
 }
