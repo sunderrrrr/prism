@@ -114,6 +114,7 @@
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();
+
 (function initPrismFrames() {
   const canvas = document.getElementById("prismCanvas");
   if (!canvas) return;
@@ -121,22 +122,21 @@
   const ctx = canvas.getContext("2d");
   const container = canvas.parentElement;
 
-  const FRAME_COUNT = 177;
+  const FRAME_COUNT = 101;
   const FRAME_PATH = "assets/frames/";
-  const FRAME_EXT = "png";
+  const FRAME_EXT = "webp";
   const FRAME_PADDING = 4;
 
   let frames = [];
   let isReady = false;
-  let currentFrame = 0;
-  let targetFrame = 0;
+  let currentFrame = Math.floor(FRAME_COUNT / 2);
+  let targetFrame = currentFrame;
   let animationFrame = null;
   let isIdle = false;
   let loadedCount = 0;
 
   const SMOOTHING = 0.12;
   const IDLE_RETURN_SPEED = 0.03;
-  const PRELOAD_RADIUS = 15;
 
   function padNumber(num, length) {
     return String(num).padStart(length, "0");
@@ -159,7 +159,7 @@
     };
 
     img.onerror = function () {
-      console.warn(`⚠️ Кадр ${index + 1} не загрузился: ${img.src}`);
+      console.warn(`⚠️ Кадр ${index + 1} не загрузился`);
       loadedCount++;
     };
 
@@ -168,8 +168,8 @@
 
   function loadInitialFrames() {
     const center = Math.floor(FRAME_COUNT / 2);
-    const start = Math.max(0, center - 20);
-    const end = Math.min(FRAME_COUNT - 1, center + 20);
+    const start = Math.max(0, center - 10);
+    const end = Math.min(FRAME_COUNT - 1, center + 10);
 
     for (let i = start; i <= end; i++) {
       loadFrame(i);
@@ -180,8 +180,8 @@
   }
 
   function preloadNearbyFrames(index) {
-    const start = Math.max(0, index - PRELOAD_RADIUS);
-    const end = Math.min(FRAME_COUNT - 1, index + PRELOAD_RADIUS);
+    const start = Math.max(0, index - 10);
+    const end = Math.min(FRAME_COUNT - 1, index + 10);
 
     for (let i = start; i <= end; i++) {
       if (!frames[i] || !frames[i].complete) {
@@ -195,7 +195,6 @@
     if (frameIndex < 0 || frameIndex >= FRAME_COUNT) return;
 
     const img = frames[frameIndex];
-
     if (!img || !img.complete) {
       preloadNearbyFrames(frameIndex);
       return;
