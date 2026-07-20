@@ -114,7 +114,6 @@
   const yearEl = document.querySelector("[data-year]");
   if (yearEl) yearEl.textContent = new Date().getFullYear();
 })();
-
 (function initPrismFrames() {
   const canvas = document.getElementById("prismCanvas");
   if (!canvas) return;
@@ -122,74 +121,91 @@
   const ctx = canvas.getContext("2d");
   const container = canvas.parentElement;
 
-  const FRAME_COUNT = 180;
+  const FRAME_COUNT = 177;
   const FRAME_PATH = "assets/frames/";
   const FRAME_EXT = "png";
   const FRAME_PADDING = 4;
 
   let frames = [];
-  let loadedCount = 0;
   let isReady = false;
   let currentFrame = 0;
   let targetFrame = 0;
   let animationFrame = null;
   let isIdle = false;
+  let loadedCount = 0;
 
   const SMOOTHING = 0.12;
   const IDLE_RETURN_SPEED = 0.03;
+  const PRELOAD_RADIUS = 15;
 
   function padNumber(num, length) {
     return String(num).padStart(length, "0");
   }
 
-  function loadFrames() {
-    let loaded = 0;
+  function loadFrame(index) {
+    if (index < 0 || index >= FRAME_COUNT) return;
+    if (frames[index] && frames[index].complete) return;
 
-    for (let i = 1; i <= FRAME_COUNT; i++) {
-      const img = new Image();
-      const frameNum = padNumber(i, FRAME_PADDING);
-      img.src = `${FRAME_PATH}frame-${frameNum}.${FRAME_EXT}`;
+    const img = new Image();
+    const frameNum = padNumber(index + 1, FRAME_PADDING);
+    img.src = `${FRAME_PATH}frame-${frameNum}.${FRAME_EXT}`;
 
-      img.onload = function () {
-        loaded++;
-        if (loaded === FRAME_COUNT) {
-          isReady = true;
+    img.onload = function () {
+      loadedCount++;
+      if (loadedCount >= FRAME_COUNT) {
+        isReady = true;
+        console.log("✅ Все кадры загружены!");
+      }
+    };
 
-          currentFrame = Math.floor(FRAME_COUNT / 2);
-          targetFrame = currentFrame;
-          drawFrame(currentFrame);
-          startAnimationLoop();
-        }
-      };
+    img.onerror = function () {
+      console.warn(`⚠️ Кадр ${index + 1} не загрузился: ${img.src}`);
+      loadedCount++;
+    };
 
-      img.onerror = function () {
-        console.error(
-          `❌ Не загрузился кадр: ${FRAME_PATH}${frameNum}.${FRAME_EXT}`,
-        );
-        loaded++;
-        if (loaded === FRAME_COUNT) {
-          console.warn("⚠️ Часть кадров не загружена, но продолжаем");
-          isReady = true;
-          currentFrame = Math.floor(FRAME_COUNT / 2);
-          targetFrame = currentFrame;
-          drawFrame(currentFrame);
-          startAnimationLoop();
-        }
-      };
+    frames[index] = img;
+  }
 
-      frames.push(img);
+  function loadInitialFrames() {
+    const center = Math.floor(FRAME_COUNT / 2);
+    const start = Math.max(0, center - 20);
+    const end = Math.min(FRAME_COUNT - 1, center + 20);
+
+    for (let i = start; i <= end; i++) {
+      loadFrame(i);
+    }
+
+    loadFrame(0);
+    loadFrame(FRAME_COUNT - 1);
+  }
+
+  function preloadNearbyFrames(index) {
+    const start = Math.max(0, index - PRELOAD_RADIUS);
+    const end = Math.min(FRAME_COUNT - 1, index + PRELOAD_RADIUS);
+
+    for (let i = start; i <= end; i++) {
+      if (!frames[i] || !frames[i].complete) {
+        loadFrame(i);
+      }
     }
   }
 
   function drawFrame(index) {
-    if (!isReady || !frames[index]) return;
+    const frameIndex = Math.round(index);
+    if (frameIndex < 0 || frameIndex >= FRAME_COUNT) return;
+
+    const img = frames[frameIndex];
+
+    if (!img || !img.complete) {
+      preloadNearbyFrames(frameIndex);
+      return;
+    }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const img = frames[index];
-
-    const canvasWidth = canvas.width / (window.devicePixelRatio || 1);
-    const canvasHeight = canvas.height / (window.devicePixelRatio || 1);
+    const dpr = window.devicePixelRatio || 1;
+    const canvasWidth = canvas.width / dpr;
+    const canvasHeight = canvas.height / dpr;
 
     const imgAspect = img.width / img.height;
     const canvasAspect = canvasWidth / canvasHeight;
@@ -215,11 +231,6 @@
     if (animationFrame) cancelAnimationFrame(animationFrame);
 
     function update() {
-      if (!isReady) {
-        animationFrame = requestAnimationFrame(update);
-        return;
-      }
-
       if (isIdle) {
         const center = Math.floor(FRAME_COUNT / 2);
         targetFrame += (center - targetFrame) * IDLE_RETURN_SPEED;
@@ -229,13 +240,10 @@
       }
 
       currentFrame += (targetFrame - currentFrame) * SMOOTHING;
-
       currentFrame = Math.min(Math.max(currentFrame, 0), FRAME_COUNT - 1);
 
-      const frameIndex = Math.round(currentFrame);
-      if (frameIndex >= 0 && frameIndex < frames.length) {
-        drawFrame(frameIndex);
-      }
+      drawFrame(currentFrame);
+      preloadNearbyFrames(Math.round(currentFrame));
 
       animationFrame = requestAnimationFrame(update);
     }
@@ -244,8 +252,6 @@
   }
 
   document.addEventListener("mousemove", function (e) {
-    if (!isReady) return;
-
     isIdle = false;
     const mouseX = e.clientX / window.innerWidth;
     targetFrame = mouseX * (FRAME_COUNT - 1);
@@ -260,7 +266,7 @@
     if (document.hidden && animationFrame) {
       cancelAnimationFrame(animationFrame);
       animationFrame = null;
-    } else if (!document.hidden && !animationFrame && isReady) {
+    } else if (!document.hidden && !animationFrame) {
       startAnimationLoop();
     }
   });
@@ -271,15 +277,13 @@
 
     canvas.width = rect.width * dpr;
     canvas.height = rect.height * dpr;
-
     canvas.style.width = rect.width + "px";
     canvas.style.height = rect.height + "px";
 
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
 
-    if (isReady) {
-      drawFrame(Math.round(currentFrame));
-    }
+    drawFrame(currentFrame);
   }
 
   window.addEventListener("resize", resizeCanvas);
@@ -287,13 +291,15 @@
     setTimeout(resizeCanvas, 100);
   });
 
-  loadFrames();
+  loadInitialFrames();
+  startAnimationLoop();
 
   setTimeout(function () {
-    if (!isReady) {
-      console.warn(
-        "⚠️ Кадры не загрузились за 10 секунд, проверьте путь assets/frames/",
+    console.log(`📊 Загружено кадров: ${loadedCount}/${FRAME_COUNT}`);
+    if (loadedCount === 0) {
+      console.error(
+        "❌ НИ ОДИН КАДР НЕ ЗАГРУЗИЛСЯ! Проверь путь: assets/frames/frame-0001.png",
       );
     }
-  }, 10000);
+  }, 3000);
 })();

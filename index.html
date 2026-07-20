@@ -6,43 +6,62 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Prism — Контент и Лендинги, Которые Увеличивают Продажи</title>
+    <title>Prism - Лендинги и Контент, Которые Увеличивают Продажи</title>
     <meta
       name="description"
       content="Преломляем внимание в деньги. Мы строим воронки из вирального
               контента и убедительных страниц, чтобы вы могли продавать свой
               опыт без лишней головной боли."
     />
+    <link rel="preload" as="image" href="assets/frames/frame-0089.png" />
+    <link rel="preload" as="image" href="assets/frames/frame-0001.png" />
+    <link rel="preload" as="image" href="assets/frames/frame-0177.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+    <link rel="icon" href="assets/prism.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    
+    <body>
+      <div id="preload" style="display: none"></div>
+      <script>
+        (function preloadFrames() {
+          const total = 177;
+          const container = document.getElementById("preload");
+          const criticalFrames = [1, 44, 88, 133, 177];
+          for (let i = 1; i <= total; i++) {
+            const link = document.createElement("link");
+            link.rel = "preload";
+            link.as = "image";
+            const num = String(i).padStart(4, "0");
+            link.href = `assets/frames/frame-${num}.png`;
+            container.appendChild(link);
+          }
+        })();
+      </script>
+
     <div class="bg-atmosphere" aria-hidden="true"></div>
 
-    
     <header class="site-header">
       <div class="container">
         <a href="#top" class="brand">
           <img src="assets/prism.png" alt="Логотип Prism" />
-          <span>Prism</span>
+          <span>PRISM</span>
         </a>
 
         <nav class="main-nav" aria-label="Основное меню">
-          <a href="#services">Услуги</a>
-          <a href="#work">Проекты</a>
-          <a href="#process">Процесс</a>
-          <a href="#testimonials">Отзывы</a>
-          <a href="#contact">Контакты</a>
+          <a href="#services">{ Услуги }</a>
+          <a href="#work">{ Проекты }</a>
+          <a href="#process">{ Процесс }</a>
+          <a href="#testimonials">{ Отзывы }</a>
+          <a href="#contact">{ Контакты }</a>
         </nav>
 
         <div class="header-cta">
-          
           <a
             href="https://t.me/rosewood_str"
             class="btn btn-ghost btn-small"
@@ -61,7 +80,6 @@
       </div>
     </header>
 
-    
     <div class="mobile-drawer">
       <a href="#services">Услуги</a>
       <a href="#work">Проекты</a>
@@ -78,7 +96,6 @@
     </div>
 
     <main id="top">
-      
       <section class="hero">
         <div class="container">
           <div class="hero-copy">
@@ -106,15 +123,54 @@
             </div>
           </div>
           <div class="hero-visual" aria-hidden="true">
-            <div class="prism-glow"></div>
-            <div class="canvas-container">
-              <canvas id="prismCanvas" class="prism-canvas"></canvas>
+            <div class="editor-window">
+              <div class="editor-titlebar">
+                <div class="traffic-lights">
+                  <span class="dot dot-red"></span>
+                  <span class="dot dot-yellow"></span>
+                  <span class="dot dot-green"></span>
+                </div>
+                <div class="editor-tab">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M9 18l-6-6 6-6M15 6l6 6-6 6"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  <span>shape.fbx</span>
+                </div>
+                <div class="editor-search">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
+                    <line x1="21" y1="21" x2="16.5" y2="16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                  </svg>
+                </div>
+              </div>
+
+              <div class="editor-viewport">
+                <div class="prism-glow"></div>
+                <div class="canvas-container">
+                  <canvas id="prismCanvas" class="prism-canvas"></canvas>
+                </div>
+              </div>
+
+              <div class="editor-code">
+                <pre><code><span class="c-type">int</span> <span class="c-fn">main</span>() {
+    QuantumBits q;
+    <span class="c-type">auto</span> f = q.collapse();
+    <span class="c-kw">volatile</span> <span class="c-type">int</span> x = f(42);
+    std::cout &lt;&lt; (x ^ y ^ z);
+    <span class="c-kw">return</span> 0;
+}</code></pre>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      
       <section class="section" id="services">
         <div class="container">
           <div class="section-head" data-reveal>
@@ -163,7 +219,6 @@
         </div>
       </section>
 
-      
       <section class="section" id="work">
         <div class="container">
           <div
@@ -313,7 +368,6 @@
         </div>
       </section>
 
-      
       <section class="section" id="testimonials">
         <div class="container">
           <div class="section-head" data-reveal>
@@ -327,7 +381,6 @@
         </div>
       </section>
 
-      
       <section class="section" id="process">
         <div class="container">
           <div class="section-head" data-reveal>
@@ -378,7 +431,6 @@
         </div>
       </section>
 
-      
       <section class="final-cta" id="contact">
         <div class="container">
           <span class="eyebrow"
@@ -404,7 +456,6 @@
       </section>
     </main>
 
-    
     <footer class="site-footer">
       <div class="container">
         <div class="footer-top">
@@ -489,7 +540,6 @@
       </div>
     </footer>
 
-    
     <div class="floating-panel">
       <a
         href="https://t.me/rosewood_str"
