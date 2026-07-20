@@ -138,11 +138,13 @@
   let isIdle = false;
   let loadedCount = 0;
   let initialLoadDone = false;
+  let progressInterval = null;
 
   const SMOOTHING = 0.12;
   const IDLE_RETURN_SPEED = 0.03;
-  const CRITICAL_LOAD_COUNT = 5;
   const PRELOAD_RADIUS = 20;
+
+  const INITIAL_LOAD_COUNT = 15;
 
   function padNumber(num, length) {
     return String(num).padStart(length, "0");
@@ -157,11 +159,41 @@
       const percent = Math.round(progress);
       label.textContent = percent < 100 ? `Загрузка ${percent}%` : "Готово";
     }
-    if (loaded >= total && preloader) {
+    if (
+      loaded >= INITIAL_LOAD_COUNT &&
+      preloader &&
+      !preloader.classList.contains("hidden")
+    ) {
       setTimeout(() => {
         preloader.classList.add("hidden");
       }, 400);
     }
+  }
+
+  function startProgressAnimation() {
+    if (progressInterval) return;
+    progressInterval = setInterval(() => {
+      if (!preloader || preloader.classList.contains("hidden")) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+        return;
+      }
+      const progress = Math.min((loadedCount / INITIAL_LOAD_COUNT) * 100, 100);
+      if (progressBar) {
+        progressBar.style.width = `${progress}%`;
+      }
+      if (label) {
+        const percent = Math.round(progress);
+        label.textContent = percent < 100 ? `Загрузка ${percent}%` : "Готово";
+      }
+      if (loadedCount >= INITIAL_LOAD_COUNT && preloader) {
+        clearInterval(progressInterval);
+        progressInterval = null;
+        setTimeout(() => {
+          preloader.classList.add("hidden");
+        }, 400);
+      }
+    }, 50);
   }
 
   function loadFrame(index) {
@@ -174,33 +206,33 @@
 
     img.onload = function () {
       loadedCount++;
-      updatePreloader(loadedCount, FRAME_COUNT);
-      if (loadedCount >= CRITICAL_LOAD_COUNT && !initialLoadDone) {
+      if (loadedCount >= INITIAL_LOAD_COUNT && !initialLoadDone) {
         initialLoadDone = true;
         isReady = true;
         resizeCanvas();
         drawFrame(currentFrame);
+        startAnimationLoop();
       }
     };
 
     img.onerror = function () {
       loadedCount++;
-      updatePreloader(loadedCount, FRAME_COUNT);
-      if (loadedCount >= CRITICAL_LOAD_COUNT && !initialLoadDone) {
+      if (loadedCount >= INITIAL_LOAD_COUNT && !initialLoadDone) {
         initialLoadDone = true;
         isReady = true;
         resizeCanvas();
         drawFrame(currentFrame);
+        startAnimationLoop();
       }
     };
 
     frames[index] = img;
   }
 
-  function loadCriticalFrames() {
+  function loadInitialFrames() {
     const center = Math.floor(FRAME_COUNT / 2);
-    const start = Math.max(0, center - 2);
-    const end = Math.min(FRAME_COUNT - 1, center + 2);
+    const start = Math.max(0, center - 7);
+    const end = Math.min(FRAME_COUNT - 1, center + 7);
 
     for (let i = start; i <= end; i++) {
       loadFrame(i);
@@ -291,19 +323,13 @@
     update();
   }
 
-  let mouseMoveCount = 0;
-
   document.addEventListener("mousemove", function (e) {
     if (!initialLoadDone) return;
     isIdle = false;
     const mouseX = e.clientX / window.innerWidth;
     targetFrame = mouseX * (FRAME_COUNT - 1);
     targetFrame = Math.min(Math.max(targetFrame, 0), FRAME_COUNT - 1);
-
-    mouseMoveCount++;
-    if (mouseMoveCount % 3 === 0) {
-      preloadNearbyFrames(targetFrame);
-    }
+    preloadNearbyFrames(targetFrame);
   });
 
   document.addEventListener("mouseleave", function () {
@@ -341,8 +367,8 @@
     setTimeout(resizeCanvas, 100);
   });
 
-  loadCriticalFrames();
-  startAnimationLoop();
+  loadInitialFrames();
+  startProgressAnimation();
 
   setTimeout(function () {
     if (loadedCount === 0) {
