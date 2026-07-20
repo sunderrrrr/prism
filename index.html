@@ -6,53 +6,84 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>Prism - Лендинги и Контент, Которые Увеличивают Продажи</title>
+    <title>Prism — Лендинги и Контент, Которые Увеличивают Продажи</title>
     <meta
       name="description"
-      content="Преломляем внимание в деньги. Мы строим воронки из вирального
-              контента и убедительных страниц, чтобы вы могли продавать свой
-              опыт без лишней головной боли."
+      content="Преломляем внимание в деньги. Мы строим воронки из вирального контента и убедительных страниц, чтобы вы могли продавать свой опыт без лишней головной боли."
     />
-    <link rel="preload" as="image" href="assets/frames/frame-0089.png" />
-    <link rel="preload" as="image" href="assets/frames/frame-0001.png" />
-    <link rel="preload" as="image" href="assets/frames/frame-0177.png" />
+    <link rel="preload" as="image" href="assets/frames/frame-0051.webp" />
+    <link rel="preload" as="image" href="assets/frames/frame-0001.webp" />
+    <link rel="preload" as="image" href="assets/frames/frame-0101.webp" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="icon" href="assets/prism.png" type="image/png" />
     <link rel="stylesheet" href="css/styles.css" />
   </head>
   <body>
-    <body>
-      <div id="preload" style="display: none"></div>
-      <script>
-        (function preloadFrames() {
-          const total = 177;
-          const container = document.getElementById("preload");
-          const criticalFrames = [1, 44, 88, 133, 177];
-          for (let i = 1; i <= total; i++) {
-            const link = document.createElement("link");
-            link.rel = "preload";
-            link.as = "image";
-            const num = String(i).padStart(4, "0");
-            link.href = `assets/frames/frame-${num}.png`;
-            container.appendChild(link);
-          }
-        })();
-      </script>
+    <div class="preloader" id="preloader" aria-hidden="true">
+      <div class="preloader-window">
+        <div class="preloader-titlebar">
+          <div class="preloader-lights">
+            <span class="preloader-dot preloader-dot-red"></span>
+            <span class="preloader-dot preloader-dot-yellow"></span>
+            <span class="preloader-dot preloader-dot-green"></span>
+          </div>
+          <span class="preloader-title">prism.app</span>
+        </div>
+        <div class="preloader-body">
+          <div class="preloader-icon">
+            <svg viewBox="0 0 64 64" fill="none">
+              <polygon
+                points="32,4 56,20 56,44 32,60 8,44 8,20"
+                stroke="currentColor"
+                stroke-width="1.2"
+              />
+              <line
+                x1="32"
+                y1="4"
+                x2="32"
+                y2="60"
+                stroke="currentColor"
+                stroke-width="1.2"
+              />
+              <line
+                x1="8"
+                y1="20"
+                x2="56"
+                y2="20"
+                stroke="currentColor"
+                stroke-width="1.2"
+              />
+              <line
+                x1="8"
+                y1="44"
+                x2="56"
+                y2="44"
+                stroke="currentColor"
+                stroke-width="1.2"
+              />
+            </svg>
+          </div>
+          <div class="preloader-bar">
+            <div class="preloader-progress" id="preloaderProgress"></div>
+          </div>
+          <span class="preloader-label" id="preloaderLabel">Загрузка</span>
+        </div>
+      </div>
+    </div>
 
     <div class="bg-atmosphere" aria-hidden="true"></div>
 
     <header class="site-header">
       <div class="container">
         <a href="#top" class="brand">
-          <img src="assets/prism.png" alt="Логотип Prism" />
+          <img src="assets/prism.png" alt="Prism" width="34" height="34" />
           <span>PRISM</span>
         </a>
-
         <nav class="main-nav" aria-label="Основное меню">
           <a href="#services">{ Услуги }</a>
           <a href="#work">{ Проекты }</a>
@@ -60,7 +91,6 @@
           <a href="#testimonials">{ Отзывы }</a>
           <a href="#contact">{ Контакты }</a>
         </nav>
-
         <div class="header-cta">
           <a
             href="https://t.me/rosewood_str"
@@ -144,19 +174,31 @@
                 </div>
                 <div class="editor-search">
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                    <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8" />
-                    <line x1="21" y1="21" x2="16.5" y2="16.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+                    <line
+                      x1="21"
+                      y1="21"
+                      x2="16.5"
+                      y2="16.5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
                   </svg>
                 </div>
               </div>
-
               <div class="editor-viewport">
                 <div class="prism-glow"></div>
                 <div class="canvas-container">
                   <canvas id="prismCanvas" class="prism-canvas"></canvas>
                 </div>
               </div>
-
               <div class="editor-code">
                 <pre><code><span class="c-type">int</span> <span class="c-fn">main</span>() {
     QuantumBits q;
@@ -245,7 +287,6 @@
               </ul>
             </div>
           </div>
-
           <div class="carousel-wrap" data-reveal>
             <div class="carousel-track" data-case-track></div>
             <div class="carousel-controls">
@@ -265,7 +306,6 @@
               </button>
             </div>
           </div>
-
           <div class="offer-row" data-track="web" id="offer-web" data-reveal>
             <div>
               <span class="offer-index">{ 02 / Лендинги }</span>
@@ -286,7 +326,6 @@
               </ul>
             </div>
           </div>
-
           <div
             class="offer-row"
             data-track="automation"
@@ -312,7 +351,6 @@
               </ul>
             </div>
           </div>
-
           <div
             class="offer-row"
             data-track="launches"
@@ -335,7 +373,6 @@
               </ul>
             </div>
           </div>
-
           <div
             class="offer-row"
             data-track="consult"
@@ -461,7 +498,7 @@
         <div class="footer-top">
           <div>
             <a href="#top" class="footer-brand">
-              <img src="assets/prism.png" alt="Логотип Prism" />
+              <img src="assets/prism.png" alt="Prism" width="30" height="30" />
               <span>Prism</span>
             </a>
             <p>
@@ -547,19 +584,11 @@
         rel="noopener"
         aria-label="Telegram"
       >
-        <img src="assets/tg.svg" alt="Telegram" />
+        <img src="assets/tg.svg" alt="Telegram" width="28" height="28" />
       </a>
     </div>
 
     <script src="js/data.js"></script>
     <script src="js/script.js"></script>
-    <script>
-      document.addEventListener("mousemove", (e) => {
-        const bg = document.querySelector(".bg-atmosphere");
-        const x = (window.innerWidth - e.pageX * 2) / 100;
-        const y = (window.innerHeight - e.pageY * 2) / 100;
-        bg.style.transform = `translate(${x}px, ${y}px)`;
-      });
-    </script>
   </body>
 </html>

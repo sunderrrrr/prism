@@ -121,6 +121,9 @@
 
   const ctx = canvas.getContext("2d");
   const container = canvas.parentElement;
+  const preloader = document.getElementById("preloader");
+  const progressBar = document.getElementById("preloaderProgress");
+  const label = document.getElementById("preloaderLabel");
 
   const FRAME_COUNT = 101;
   const FRAME_PATH = "assets/frames/";
@@ -134,12 +137,31 @@
   let animationFrame = null;
   let isIdle = false;
   let loadedCount = 0;
+  let initialLoadDone = false;
 
   const SMOOTHING = 0.12;
   const IDLE_RETURN_SPEED = 0.03;
+  const CRITICAL_LOAD_COUNT = 5;
+  const PRELOAD_RADIUS = 20;
 
   function padNumber(num, length) {
     return String(num).padStart(length, "0");
+  }
+
+  function updatePreloader(loaded, total) {
+    const progress = Math.min((loaded / total) * 100, 100);
+    if (progressBar) {
+      progressBar.style.width = `${progress}%`;
+    }
+    if (label) {
+      const percent = Math.round(progress);
+      label.textContent = percent < 100 ? `Загрузка ${percent}%` : "Готово";
+    }
+    if (loaded >= total && preloader) {
+      setTimeout(() => {
+        preloader.classList.add("hidden");
+      }, 400);
+    }
   }
 
   function loadFrame(index) {
@@ -152,24 +174,33 @@
 
     img.onload = function () {
       loadedCount++;
-      if (loadedCount >= FRAME_COUNT) {
+      updatePreloader(loadedCount, FRAME_COUNT);
+      if (loadedCount >= CRITICAL_LOAD_COUNT && !initialLoadDone) {
+        initialLoadDone = true;
         isReady = true;
-        console.log("✅ Все кадры загружены!");
+        resizeCanvas();
+        drawFrame(currentFrame);
       }
     };
 
     img.onerror = function () {
-      console.warn(`⚠️ Кадр ${index + 1} не загрузился`);
       loadedCount++;
+      updatePreloader(loadedCount, FRAME_COUNT);
+      if (loadedCount >= CRITICAL_LOAD_COUNT && !initialLoadDone) {
+        initialLoadDone = true;
+        isReady = true;
+        resizeCanvas();
+        drawFrame(currentFrame);
+      }
     };
 
     frames[index] = img;
   }
 
-  function loadInitialFrames() {
+  function loadCriticalFrames() {
     const center = Math.floor(FRAME_COUNT / 2);
-    const start = Math.max(0, center - 10);
-    const end = Math.min(FRAME_COUNT - 1, center + 10);
+    const start = Math.max(0, center - 2);
+    const end = Math.min(FRAME_COUNT - 1, center + 2);
 
     for (let i = start; i <= end; i++) {
       loadFrame(i);
@@ -179,9 +210,15 @@
     loadFrame(FRAME_COUNT - 1);
   }
 
+  let lastPreloadIndex = -1;
+
   function preloadNearbyFrames(index) {
-    const start = Math.max(0, index - 10);
-    const end = Math.min(FRAME_COUNT - 1, index + 10);
+    const frameIndex = Math.round(index);
+    if (frameIndex === lastPreloadIndex) return;
+    lastPreloadIndex = frameIndex;
+
+    const start = Math.max(0, frameIndex - PRELOAD_RADIUS);
+    const end = Math.min(FRAME_COUNT - 1, frameIndex + PRELOAD_RADIUS);
 
     for (let i = start; i <= end; i++) {
       if (!frames[i] || !frames[i].complete) {
@@ -230,6 +267,11 @@
     if (animationFrame) cancelAnimationFrame(animationFrame);
 
     function update() {
+      if (!initialLoadDone) {
+        animationFrame = requestAnimationFrame(update);
+        return;
+      }
+
       if (isIdle) {
         const center = Math.floor(FRAME_COUNT / 2);
         targetFrame += (center - targetFrame) * IDLE_RETURN_SPEED;
@@ -242,7 +284,6 @@
       currentFrame = Math.min(Math.max(currentFrame, 0), FRAME_COUNT - 1);
 
       drawFrame(currentFrame);
-      preloadNearbyFrames(Math.round(currentFrame));
 
       animationFrame = requestAnimationFrame(update);
     }
@@ -250,11 +291,19 @@
     update();
   }
 
+  let mouseMoveCount = 0;
+
   document.addEventListener("mousemove", function (e) {
+    if (!initialLoadDone) return;
     isIdle = false;
     const mouseX = e.clientX / window.innerWidth;
     targetFrame = mouseX * (FRAME_COUNT - 1);
     targetFrame = Math.min(Math.max(targetFrame, 0), FRAME_COUNT - 1);
+
+    mouseMoveCount++;
+    if (mouseMoveCount % 3 === 0) {
+      preloadNearbyFrames(targetFrame);
+    }
   });
 
   document.addEventListener("mouseleave", function () {
@@ -265,7 +314,7 @@
     if (document.hidden && animationFrame) {
       cancelAnimationFrame(animationFrame);
       animationFrame = null;
-    } else if (!document.hidden && !animationFrame) {
+    } else if (!document.hidden && !animationFrame && initialLoadDone) {
       startAnimationLoop();
     }
   });
@@ -282,7 +331,9 @@
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.scale(dpr, dpr);
 
-    drawFrame(currentFrame);
+    if (initialLoadDone) {
+      drawFrame(currentFrame);
+    }
   }
 
   window.addEventListener("resize", resizeCanvas);
@@ -290,14 +341,13 @@
     setTimeout(resizeCanvas, 100);
   });
 
-  loadInitialFrames();
+  loadCriticalFrames();
   startAnimationLoop();
 
   setTimeout(function () {
-    console.log(`📊 Загружено кадров: ${loadedCount}/${FRAME_COUNT}`);
     if (loadedCount === 0) {
       console.error(
-        "❌ НИ ОДИН КАДР НЕ ЗАГРУЗИЛСЯ! Проверь путь: assets/frames/frame-0001.png",
+        "❌ Кадры не загрузились. Проверь путь: assets/frames/frame-0001.webp",
       );
     }
   }, 3000);
