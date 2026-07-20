@@ -1,12 +1,8 @@
 :root {
-  /* ====================================================================
-     👇 НАСТРОЙКИ САЙТА
-     ==================================================================== */
   --base-font-size: 18px;
   --container-width: 1180px;
   --desktop-prism-max: 700px;
   --mobile-prism-size: 340px;
-  /* ==================================================================== */
 
   --bg: #0a0a0e;
   --bg-soft: #0e0e13;
@@ -86,7 +82,6 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-/* ===== BACKGROUND ===== */
 .bg-atmosphere {
   position: fixed;
   inset: 0;
@@ -99,11 +94,10 @@ body::-webkit-scrollbar {
     url("../assets/background.png") no-repeat top left;
   background-size: cover;
   transition: transform 0.01s linear;
-  /* АНИМАЦИЯ: Медленное "дыхание" (scale) */
+
   animation: breathe-bg 20s ease-in-out infinite alternate;
 }
 
-/* Предотвращаем дерганье в Сафари */
 .bg-atmosphere {
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
@@ -132,7 +126,7 @@ body::-webkit-scrollbar {
     transform: scale(1);
   }
   100% {
-    transform: scale(1.05); /* Увеличиваем картинку на 3% */
+    transform: scale(1.05);
   }
 }
 img {
@@ -152,7 +146,6 @@ section {
   z-index: 1;
 }
 
-/* ===== TYPOGRAPHY ===== */
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 12px;
@@ -195,7 +188,6 @@ p {
   max-width: 46ch;
 }
 
-/* ===== BUTTONS ===== */
 .btn {
   text-decoration: none;
   display: inline-flex;
@@ -251,7 +243,6 @@ p {
   font-size: 13px;
 }
 
-/* ===== HEADER ===== */
 .site-header {
   position: fixed;
   top: 0;
@@ -370,7 +361,6 @@ p {
   transform: rotate(-45deg);
 }
 
-/* ===== HERO ===== */
 .hero {
   min-height: 100svh;
   display: flex;
@@ -419,7 +409,6 @@ p {
   gap: 18px;
 }
 
-/* VISUAL */
 .hero-visual {
   position: relative;
   display: flex;
@@ -455,14 +444,16 @@ p {
   border-radius: 50%;
   background: radial-gradient(
     circle,
-    rgba(123, 108, 224, 0.35) 0%,
-    rgba(178, 61, 104, 0.18) 35%,
-    rgba(42, 156, 143, 0.12) 55%,
+    rgba(111, 161, 211, 0.15) 0%,
+    rgba(111, 161, 211, 0.08) 35%,
+    rgba(111, 161, 211, 0.04) 55%,
     transparent 72%
   );
-  filter: blur(38px);
+  filter: blur(48px);
   mix-blend-mode: screen;
   animation: glow-pulse 6s ease-in-out infinite;
+  opacity: 0.7;
+  transform: scale(0.9);
 }
 @keyframes glow-pulse {
   0%,
@@ -483,7 +474,6 @@ p {
   }
 }
 
-/* ===== SECTIONS ===== */
 .section {
   padding: 160px 0;
   border-top: 1px solid var(--glass-border);
@@ -499,7 +489,6 @@ p {
   margin-bottom: 16px;
 }
 
-/* TIER CARDS */
 .tier-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -568,7 +557,6 @@ p {
   --track-color: var(--accent-violet);
 }
 
-/* OFFER ROWS */
 .offer-row {
   display: grid;
   grid-template-columns: 0.85fr 1.15fr;
@@ -635,12 +623,11 @@ p {
   transform: translateY(-2px);
 }
 
-/* CAROUSEL */
 .carousel-wrap {
   position: relative;
   width: 100%;
-  overflow: visible; /* ВАЖНО: Разрешаем карточкам вылетать за пределы */
-  padding: 10px 0; /* Небольшой отступ сверху и снизу, чтобы тень не обрезалась */
+  overflow: visible;
+  padding: 10px 0;
 }
 
 .carousel-track {
@@ -729,7 +716,7 @@ p {
   background: var(--glass-bg-strong);
   border-color: var(--glass-border-strong);
 }
-/* TESTIMONIALS */
+
 .testimonial-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -765,7 +752,6 @@ p {
   color: var(--text-faint);
 }
 
-/* PROCESS */
 .process-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -795,7 +781,6 @@ p {
   font-size: 13.5px;
 }
 
-/* FINAL CTA */
 .final-cta {
   text-align: center;
   padding: 130px 0;
@@ -832,10 +817,9 @@ p {
   color: var(--text-muted);
 }
 
-/* FOOTER */
 .site-footer {
-  position: relative; /* ← ДОБАВИТЬ */
-  z-index: 1; /* ← ДОБАВИТЬ */
+  position: relative;
+  z-index: 1;
   border-top: 1px solid var(--glass-border);
   padding: 64px 0 32px;
 }
@@ -915,7 +899,6 @@ p {
   color: var(--text-faint);
 }
 
-/* FLOATING PANEL */
 .floating-panel {
   position: fixed;
   right: 24px;
@@ -956,21 +939,20 @@ p {
   display: block;
 }
 
-/* ===== ПРЕМИУМ АНИМАЦИЯ ПОЯВЛЕНИЯ ===== */
 [data-reveal] {
   opacity: 0;
-  /* Изначально элемент сдвинут вниз и чуть сжат (эффект глубины) */
+
   transform: translateY(40px) scale(0.96);
-  /* Используем эластичную кривую для дорогого ощущения "пружины" */
+
   transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 [data-reveal].is-visible {
   opacity: 1;
-  /* Элемент встает на место и возвращает свой нормальный размер */
+
   transform: translateY(0) scale(1);
 }
-/* MOBILE DRAWER */
+
 .mobile-drawer {
   position: fixed;
   inset: 0;
@@ -1133,8 +1115,58 @@ p {
 }
 .tier-card:hover,
 .case-card:hover {
-  transform: translateY(-6px) scale(1.015); /* Всплывает и чуть увеличивается */
+  transform: translateY(-6px) scale(1.015);
   box-shadow:
     inset 0 0 0 1px rgba(255, 255, 255, 0.15),
     0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.canvas-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 500px;
+  aspect-ratio: 1/1;
+  border-radius: var(--radius-l);
+  overflow: hidden;
+  background: transparent;
+  filter: drop-shadow(0 30px 60px rgba(0, 0, 0, 0.65));
+
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prism-canvas {
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+
+  object-fit: contain;
+
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+@media (max-width: 1024px) {
+  .canvas-container {
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+  .canvas-container {
+    max-width: var(--mobile-prism-size);
+    border-radius: var(--radius-m);
+  }
 }
