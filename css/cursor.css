@@ -1,0 +1,19 @@
+/* ==========================================================================
+   CURSOR — a plain crosshair (plus sign, no circle), identical everywhere
+   including hover states. Built as an inline SVG data URI so it never
+   depends on an external asset file and never falls back to the system
+   arrow. The `crosshair` keyword after the url() is only a same-shape
+   safety net for the extremely rare case a browser can't parse the image
+   cursor at all — it is never a visible pointer arrow.
+   ========================================================================== */
+
+:root {
+  --cursor-crosshair: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cg stroke='%23000000' stroke-width='3' stroke-linecap='square' opacity='0.35'%3E%3Cpath d='M12 1v8M12 15v8M1 12h8M15 12h8'/%3E%3C/g%3E%3Cg stroke='%23f3f1ea' stroke-width='1.4' stroke-linecap='square'%3E%3Cpath d='M12 1v8M12 15v8M1 12h8M15 12h8'/%3E%3C/g%3E%3C/svg%3E")
+    12 12;
+}
+
+html,
+body,
+* {
+  cursor: var(--cursor-crosshair), crosshair !important;
+}

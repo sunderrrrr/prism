@@ -1,0 +1,163 @@
+/* ==========================================================================
+   RULERS — Photoshop-style top/left rulers with tick marks and a
+   cursor-tracking indicator on each axis, plus a live coordinate readout
+   in the corner where the two rulers meet.
+
+   Coordinates shown are viewport pixel coordinates (like a design tool's
+   canvas ruler at 100% zoom). Desktop / fine-pointer only — see the
+   media query at the bottom, mirrored in ruler.js.
+   ========================================================================== */
+
+.ruler-top,
+.ruler-left,
+.ruler-corner {
+  position: fixed;
+  z-index: 90;
+  background: var(--glass-bg);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  pointer-events: none;
+}
+
+.ruler-top {
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--ruler-size);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.ruler-left {
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: var(--ruler-size);
+  border-right: 1px solid var(--glass-border);
+}
+
+.ruler-ticks {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+/* Top ruler: major tick every 100px (full height), minor every 20px (half height) */
+.ruler-top .ruler-ticks {
+  background-image:
+    repeating-linear-gradient(
+      to right,
+      var(--glass-border-strong) 0 1px,
+      transparent 1px 100px
+    ),
+    repeating-linear-gradient(
+      to right,
+      var(--glass-border) 0 1px,
+      transparent 1px 20px
+    );
+  background-size:
+    100% 100%,
+    100% 50%;
+  background-position:
+    0 0,
+    0 100%;
+  background-repeat: repeat-x;
+}
+
+/* Left ruler: same idea, rotated to the vertical axis */
+.ruler-left .ruler-ticks {
+  background-image:
+    repeating-linear-gradient(
+      to bottom,
+      var(--glass-border-strong) 0 1px,
+      transparent 1px 100px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      var(--glass-border) 0 1px,
+      transparent 1px 20px
+    );
+  background-size:
+    100% 100%,
+    50% 100%;
+  background-position:
+    0 0,
+    100% 0;
+  background-repeat: repeat-y;
+}
+
+.ruler-label {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.ruler-top .ruler-label {
+  top: 3px;
+  transform: translateX(3px);
+}
+
+.ruler-left .ruler-label {
+  left: 3px;
+  transform-origin: left top;
+  transform: rotate(-90deg) translateX(3px);
+}
+
+/* Cursor-tracking indicator lines */
+.ruler-cursor-x,
+.ruler-cursor-y {
+  position: absolute;
+  background: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent-glow-strong);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.ruler-cursor-x {
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+}
+
+.ruler-cursor-y {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+/* Corner tile — sits above both rulers, shows live X / Y readout */
+.ruler-corner {
+  bottom: 0;
+  left: 0;
+  width: var(--ruler-size);
+  height: var(--ruler-size);
+  z-index: 91;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  gap: 1px;
+}
+
+.ruler-coord-x,
+.ruler-coord-y {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-faint);
+}
+
+@media (max-width: 767px), (hover: none), (pointer: coarse) {
+  .ruler-top,
+  .ruler-left,
+  .ruler-corner {
+    display: none;
+  }
+}

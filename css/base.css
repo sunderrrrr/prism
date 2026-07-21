@@ -1,0 +1,237 @@
+/* ==========================================================================
+   BASE — design tokens, reset, global typography
+   ========================================================================== */
+
+:root {
+  --color-accent: #6fa1d3;
+  --color-accent-hover: #5a8bb8;
+  --color-accent-glow: rgba(111, 161, 211, 0.3);
+  --color-accent-glow-strong: rgba(111, 161, 211, 0.5);
+
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 80px;
+
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glow: 0 0 40px var(--color-accent-glow);
+
+  --base-font-size: 18px;
+  --container-width: 1180px;
+  --desktop-prism-max: 700px;
+  --mobile-prism-size: 340px;
+
+  --bg: #0a0a0e;
+  --bg-soft: #0e0e13;
+  --bg-elevated: #131318;
+  --text: #f3f1ea;
+  --text-muted: #8b8a94;
+  --text-faint: #55545e;
+
+  --glass-bg: rgba(255, 255, 255, 0.025);
+  --glass-bg-strong: rgba(255, 255, 255, 0.045);
+  --glass-border: rgba(255, 255, 255, 0.09);
+  --glass-border-strong: rgba(255, 255, 255, 0.16);
+
+  --radius-s: 12px;
+  --radius-m: 16px;
+  --radius-l: 20px;
+
+  --font-display: "Unbounded", "Manrope", sans-serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --container: var(--container-width);
+  --btn-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
+
+  /* Chrome metrics — read by header.js / ruler.js and used across layout */
+  --header-h: 42px;
+  --ruler-size: 16px;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+html {
+  scroll-behavior: smooth;
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .prism-image,
+  .prism-glow {
+    animation: none;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--base-font-size);
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+body::-webkit-scrollbar {
+  display: none;
+}
+
+.bg-atmosphere {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, transparent 60%),
+    url("../assets/background.png") no-repeat top left;
+  background-size: cover;
+  transition: transform 0.01s linear;
+  animation: breathe-bg 20s ease-in-out infinite alternate;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.bg-atmosphere::before {
+  content: "";
+  position: absolute;
+  top: -35%;
+  left: 50%;
+  width: 1200px;
+  height: 1200px;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.02) 40%,
+    transparent 70%
+  );
+  filter: blur(10px);
+}
+
+@keyframes breathe-bg {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1.05);
+  }
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+section {
+  position: relative;
+  z-index: 1;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.eyebrow .bracket {
+  color: var(--text-faint);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+h1 {
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+}
+h2 {
+  font-size: clamp(1.9rem, 4vw, 3.1rem);
+}
+h3 {
+  font-size: clamp(1.15rem, 2vw, 1.5rem);
+  font-weight: 500;
+}
+h4 {
+  font-size: clamp(1rem, 1.2vw, 1.2rem);
+  font-weight: 500;
+}
+
+p,
+li,
+.text-body {
+  font-family: var(--font-body);
+  font-size: var(--base-font-size);
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.lede {
+  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  color: var(--text-muted);
+  max-width: 46ch;
+}
+
+/* Generic link underline-reveal (currently only affects plain text links
+   that opt into the `content` pseudo-element treatment elsewhere) */
+a:not(.btn):not(.brand):not(.footer-brand):hover::after {
+  width: 100%;
+}
+a:not(.btn):not(.brand):not(.footer-brand):hover {
+  color: var(--text);
+}

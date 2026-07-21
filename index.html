@@ -21,7 +21,16 @@
       rel="stylesheet"
     />
     <link rel="icon" href="assets/prism.png" type="image/png" />
-    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/buttons.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/hero.css" />
+    <link rel="stylesheet" href="css/sections.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/cursor.css" />
+    <link rel="stylesheet" href="css/ruler.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
     <div class="preloader" id="preloader" aria-hidden="true">
@@ -109,6 +118,21 @@
         </div>
       </div>
     </header>
+
+    <div class="ruler-top" id="rulerTop" aria-hidden="true">
+      <div class="ruler-ticks" id="rulerTicksTop">
+        <div class="ruler-cursor-x" id="rulerCursorX"></div>
+      </div>
+    </div>
+    <div class="ruler-left" id="rulerLeft" aria-hidden="true">
+      <div class="ruler-ticks" id="rulerTicksLeft">
+        <div class="ruler-cursor-y" id="rulerCursorY"></div>
+      </div>
+    </div>
+    <div class="ruler-corner" aria-hidden="true">
+      <span class="ruler-coord-x" id="rulerCoordX">0</span>
+      <span class="ruler-coord-y" id="rulerCoordY">0</span>
+    </div>
 
     <div class="mobile-drawer">
       <a href="#services">Услуги</a>
@@ -572,7 +596,7 @@
         </div>
         <div class="footer-bottom">
           <span>© <span data-year></span> Prism. Все права защищены.</span>
-          <span>Сделано со стеклом, без шаблонов.</span>
+          <span>Наша призма преломляет просмотры в продажи</span>
         </div>
       </div>
     </footer>
@@ -589,6 +613,10 @@
     </div>
 
     <script src="js/data.js"></script>
-    <script src="js/script.js"></script>
+    <script src="js/nav.js"></script>
+    <script src="js/reveal.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/prism-frames.js"></script>
+    <script src="js/ruler.js"></script>
   </body>
 </html>
