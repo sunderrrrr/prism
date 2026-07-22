@@ -1,5 +1,5 @@
 /* ==========================================================================
-   RULERS — Photoshop-style top/left rulers with tick marks and a
+   RULERS — Photoshop-style bottom/left rulers with tick marks and a
    cursor-tracking indicator on each axis, plus a live coordinate readout
    in the corner where the two rulers meet.
 
@@ -8,7 +8,7 @@
    media query at the bottom, mirrored in ruler.js.
    ========================================================================== */
 
-.ruler-top,
+.ruler-bottom,
 .ruler-left,
 .ruler-corner {
   position: fixed;
@@ -19,18 +19,18 @@
   pointer-events: none;
 }
 
-.ruler-top {
+.ruler-bottom {
   bottom: 0;
   left: 0;
   right: 0;
   height: var(--ruler-size);
-  border-bottom: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border);
 }
 
 .ruler-left {
-  top: 0;
+  top: var(--header-h);
   left: 0;
-  bottom: 0;
+  bottom: var(--ruler-size);
   width: var(--ruler-size);
   border-right: 1px solid var(--glass-border);
 }
@@ -41,8 +41,8 @@
   overflow: hidden;
 }
 
-/* Top ruler: major tick every 100px (full height), minor every 20px (half height) */
-.ruler-top .ruler-ticks {
+/* Bottom ruler: major tick every 100px (full strip), minor every 20px (partial) */
+.ruler-bottom .ruler-ticks {
   background-image:
     repeating-linear-gradient(
       to right,
@@ -56,10 +56,10 @@
     );
   background-size:
     100% 100%,
-    100% 50%;
+    100% 45%;
   background-position:
     0 0,
-    0 100%;
+    0 0;
   background-repeat: repeat-x;
 }
 
@@ -78,7 +78,7 @@
     );
   background-size:
     100% 100%,
-    50% 100%;
+    45% 100%;
   background-position:
     0 0,
     100% 0;
@@ -88,19 +88,19 @@
 .ruler-label {
   position: absolute;
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 7px;
   color: var(--text-faint);
   white-space: nowrap;
   user-select: none;
 }
 
-.ruler-top .ruler-label {
-  top: 3px;
+.ruler-bottom .ruler-label {
+  bottom: 1px;
   transform: translateX(3px);
 }
 
 .ruler-left .ruler-label {
-  left: 3px;
+  left: 1px;
   transform-origin: left top;
   transform: rotate(-90deg) translateX(3px);
 }
@@ -129,33 +129,52 @@
   height: 1px;
 }
 
-/* Corner tile — sits above both rulers, shows live X / Y readout */
+/* Corner tile — sits where the left ruler meets the bottom ruler, shows
+   the live X / Y readout */
 .ruler-corner {
-  bottom: 0;
   left: 0;
+  bottom: 0;
   width: var(--ruler-size);
   height: var(--ruler-size);
   z-index: 91;
   background: var(--bg-elevated);
   border-right: 1px solid var(--glass-border);
-  border-bottom: 1px solid var(--glass-border);
+  border-top: 1px solid var(--glass-border);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  line-height: 1;
-  gap: 1px;
+  overflow: hidden;
+}
+.ruler-cursor-x,
+.ruler-cursor-y {
+  position: absolute;
+  background: var(--color-accent);
+  box-shadow: 0 0 6px var(--color-accent-glow-strong);
+  pointer-events: none;
+  will-change: transform;
 }
 
-.ruler-coord-x,
-.ruler-coord-y {
-  font-family: var(--font-mono);
-  font-size: 8px;
+.ruler-cursor-x {
+  bottom: 0;
+  left: 0;
+  width: 1px;
+  height: 200%;
+}
+
+.ruler-cursor-y {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+}
+
+.ruler-coord-y::before {
+  content: ",";
   color: var(--text-faint);
 }
 
 @media (max-width: 767px), (hover: none), (pointer: coarse) {
-  .ruler-top,
+  .ruler-bottom,
   .ruler-left,
   .ruler-corner {
     display: none;

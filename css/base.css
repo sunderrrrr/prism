@@ -52,8 +52,8 @@
   --btn-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
 
   /* Chrome metrics — read by header.js / ruler.js and used across layout */
-  --header-h: 42px;
-  --ruler-size: 16px;
+  --header-h: 74px;
+  --ruler-size: 14px;
 }
 
 * {

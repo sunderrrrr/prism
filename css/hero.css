@@ -113,13 +113,6 @@
   width: 360px;
   height: 360px;
   border-radius: 50%;
-  background: radial-gradient(
-    circle,
-    rgba(111, 161, 211, 0.15) 0%,
-    rgba(111, 161, 211, 0.08) 35%,
-    rgba(111, 161, 211, 0.04) 55%,
-    transparent 72%
-  );
   filter: blur(48px);
   mix-blend-mode: screen;
   animation: glow-pulse 6s ease-in-out infinite;
@@ -232,7 +225,6 @@
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: var(--bg);
 }
 
 .editor-code {

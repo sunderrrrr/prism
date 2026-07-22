@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="css/reveal.css" />
     <link rel="stylesheet" href="css/cursor.css" />
     <link rel="stylesheet" href="css/ruler.css" />
+    <link rel="stylesheet" href="css/telegram-cta.css" />
     <link rel="stylesheet" href="css/responsive.css" />
   </head>
   <body>
@@ -119,19 +120,19 @@
       </div>
     </header>
 
-    <div class="ruler-top" id="rulerTop" aria-hidden="true">
-      <div class="ruler-ticks" id="rulerTicksTop">
-        <div class="ruler-cursor-x" id="rulerCursorX"></div>
-      </div>
-    </div>
     <div class="ruler-left" id="rulerLeft" aria-hidden="true">
       <div class="ruler-ticks" id="rulerTicksLeft">
         <div class="ruler-cursor-y" id="rulerCursorY"></div>
       </div>
     </div>
+    <div class="ruler-bottom" id="rulerBottom" aria-hidden="true">
+      <div class="ruler-ticks" id="rulerTicksBottom">
+        <div class="ruler-cursor-x" id="rulerCursorX"></div>
+      </div>
+    </div>
     <div class="ruler-corner" aria-hidden="true">
-      <span class="ruler-coord-x" id="rulerCoordX">0</span>
-      <span class="ruler-coord-y" id="rulerCoordY">0</span>
+      <span class="ruler-coord-x" id="rulerCoordX">0</span
+      ><span class="ruler-coord-y" id="rulerCoordY">0</span>
     </div>
 
     <div class="mobile-drawer">
@@ -503,16 +504,180 @@
             Напишите нам в Telegram для индивидуального расчета — без форм, без
             ожидания ответа на почту.
           </p>
-          <div class="cta-panel">
-            <span>@rosewood_str</span>
-            <a
-              href="https://t.me/rosewood_str"
-              class="btn btn-primary"
-              target="_blank"
-              rel="noopener"
-              >Написать в Telegram</a
-            >
+
+          <div class="tg-window" id="tgWindow">
+            <div class="tg-titlebar">
+              <span class="traffic-lights">
+                <span class="dot dot-red"></span>
+                <span class="dot dot-yellow"></span>
+                <span class="dot dot-green"></span>
+              </span>
+              <span class="tg-titlebar-title">Telegram</span>
+            </div>
+
+            <div class="tg-body">
+              <aside class="tg-rail" aria-hidden="true">
+                <span class="tg-rail-icon is-active">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M21 12c0 4.418-4.03 8-9 8-1.06 0-2.077-.163-3.02-.463L3 21l1.5-4.5C3.55 15.09 3 13.6 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    />
+                  </svg>
+                </span>
+                <span class="tg-rail-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <path
+                      d="M5 4h14v16l-7-4-7 4V4Z"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tg-rail-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                    <circle
+                      cx="12"
+                      cy="8"
+                      r="3.2"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M5 20c1.2-3.6 4-5.5 7-5.5s5.8 1.9 7 5.5"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                </span>
+                <span class="tg-rail-spacer"></span>
+                <span class="tg-rail-icon">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="3"
+                      stroke="currentColor"
+                      stroke-width="1.6"
+                    />
+                    <path
+                      d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1.08-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1.08 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"
+                      stroke="currentColor"
+                      stroke-width="1.3"
+                    />
+                  </svg>
+                </span>
+                <span class="tg-rail-avatar">K</span>
+              </aside>
+
+              <div class="tg-list" id="tgList">
+                <div class="tg-list-header">
+                  <span class="tg-list-title">Чаты</span>
+                  <span class="tg-list-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M4 20l1.2-4.2a8 8 0 1 1 3 3L4 20Z"
+                        stroke="currentColor"
+                        stroke-width="1.5"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
+                </div>
+                <div class="tg-search" aria-hidden="true">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                    <circle
+                      cx="11"
+                      cy="11"
+                      r="7"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    />
+                    <path
+                      d="M20 20l-3.5-3.5"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  <span>Поиск</span>
+                </div>
+                <div class="tg-chats" id="tgChats"></div>
+              </div>
+
+              <div class="tg-conversation" id="tgConversation">
+                <div class="tg-conv-header">
+                  <button
+                    class="tg-back"
+                    id="tgBack"
+                    type="button"
+                    aria-label="Назад к чатам"
+                  >
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M15 5l-7 7 7 7"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </button>
+                  <div class="tg-conv-identity">
+                    <span class="tg-conv-avatar" id="tgConvAvatar">P</span>
+                    <span class="tg-conv-text">
+                      <span class="tg-conv-name" id="tgConvName"
+                        >Prism News</span
+                      >
+                      <span class="tg-conv-status">в сети</span>
+                    </span>
+                  </div>
+                  <div class="tg-conv-icons" aria-hidden="true">
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 4.5c0-.83.67-1.5 1.5-1.5H9l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5l1.5-2 4 1.5v2.5c0 .83-.67 1.5-1.5 1.5C10.4 20.5 3.5 13.6 3.5 6.5V4.5Z"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                      />
+                      <path
+                        d="M12 7v5l3.5 2"
+                        stroke="currentColor"
+                        stroke-width="1.4"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                    <svg width="4" height="17" viewBox="0 0 4 24" fill="none">
+                      <circle cx="2" cy="4" r="1.8" fill="currentColor" />
+                      <circle cx="2" cy="12" r="1.8" fill="currentColor" />
+                      <circle cx="2" cy="20" r="1.8" fill="currentColor" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="tg-conv-messages" id="tgMessages"></div>
+
+                <div class="tg-conv-inputbar" id="tgInputBar"></div>
+              </div>
+            </div>
           </div>
+
+          <p class="tg-disclaimer">
+            Этот макет — оформление для наглядности, которое не является
+            мессендежом. Все вопросы обсуждаются в Telegram.
+          </p>
         </div>
       </section>
     </main>
@@ -596,7 +761,7 @@
         </div>
         <div class="footer-bottom">
           <span>© <span data-year></span> Prism. Все права защищены.</span>
-          <span>Наша призма преломляет просмотры в продажи</span>
+          <span>Сделано со стеклом, без шаблонов.</span>
         </div>
       </div>
     </footer>
@@ -613,10 +778,12 @@
     </div>
 
     <script src="js/data.js"></script>
+    <script src="js/telegram-data.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/reveal.js"></script>
     <script src="js/render.js"></script>
     <script src="js/prism-frames.js"></script>
     <script src="js/ruler.js"></script>
+    <script src="js/telegram-cta.js"></script>
   </body>
 </html>
