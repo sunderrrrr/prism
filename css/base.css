@@ -22,7 +22,19 @@
   --shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 40px var(--color-accent-glow);
 
-  --base-font-size: 18px;
+  /* === Шрифты === */
+  --font-display: "Unbounded", "Manrope", sans-serif;
+  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
+
+  /* === Размеры и межстрочники === */
+  --base-font-size: 22px;
+  --base-line-height: 1.6;
+  --heading-line-height: 1.08;
+  --lede-font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  --eyebrow-font-size: 12px;
+  --small-font-size: 0.875rem;
+
   --container-width: 1180px;
   --desktop-prism-max: 700px;
   --mobile-prism-size: 340px;
@@ -43,15 +55,10 @@
   --radius-m: 16px;
   --radius-l: 20px;
 
-  --font-display: "Unbounded", "Manrope", sans-serif;
-  --font-body: "Manrope", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-mono: "JetBrains Mono", "SFMono-Regular", monospace;
-
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --container: var(--container-width);
   --btn-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.5);
 
-  /* Chrome metrics — read by header.js / ruler.js and used across layout */
   --header-h: 74px;
   --ruler-size: 14px;
 }
@@ -71,6 +78,18 @@ html {
   scroll-behavior: smooth;
   width: 100%;
   height: 100%;
+}
+html,
+body {
+  touch-action: pan-y;
+}
+* {
+  touch-action: manipulation;
+}
+html {
+  zoom: 1;
+  -moz-transform: scale(1);
+  -moz-transform-origin: 0 0;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -96,7 +115,7 @@ body {
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--base-font-size);
-  line-height: 1.6;
+  line-height: var(--base-line-height);
   overflow-x: hidden;
   position: relative;
   width: 100%;
@@ -171,7 +190,7 @@ section {
 
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 12px;
+  font-size: var(--eyebrow-font-size);
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -192,7 +211,7 @@ h5,
 h6 {
   font-family: var(--font-display);
   font-weight: 400;
-  line-height: 1.08;
+  line-height: var(--heading-line-height);
   letter-spacing: -0.01em;
   color: var(--text);
 }
@@ -217,14 +236,15 @@ li,
 .text-body {
   font-family: var(--font-body);
   font-size: var(--base-font-size);
-  line-height: 1.6;
+  line-height: var(--base-line-height);
   color: var(--text-muted);
 }
 
 .lede {
-  font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+  font-size: var(--lede-font-size);
   color: var(--text-muted);
   max-width: 46ch;
+  line-height: var(--base-line-height);
 }
 
 /* Generic link underline-reveal (currently only affects plain text links

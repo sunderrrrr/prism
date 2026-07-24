@@ -9,82 +9,100 @@
 // or the person chat's input field. Placeholder links all point to
 // @rosewood_str — swap in the real per-chat links when ready.
 // ==========================================================================
-
 const TELEGRAM_CHATS = [
   {
     id: "news",
     type: "channel",
-    name: "Prism News",
-    avatarLetter: "P",
+    name: "Prism Channel",
+    avatarImage: "assets/avatars/logo.jpg",
     avatarColor: "#6fa1d3",
     preview: "Новый кейс уже в портфолио 🚀",
     time: "12:04",
     unread: 3,
+    subscribers: 12450,
     link: "https://t.me/rosewood_str",
     ctaLabel: "Читать далее",
     messages: [
-      { from: "them", text: "Всем привет! Собрали апдейты команды за неделю." },
       {
         from: "them",
-        text: "Новый кейс уже в портфолио — залетайте посмотреть.",
+        text: "Уведомления о скидках, полезная информация и новости собраны тут. Мы делимся бесплатным материалом и разбираем ошибки в ведении бизнеса",
+      },
+      {
+        from: "them",
+        text: "Для перехода в наш Telegram канал используйте кнопку ниже",
       },
     ],
   },
   {
     id: "production",
     type: "channel",
-    name: "Prism Production Cases",
-    avatarLetter: "PC",
+    name: "Prism Reels",
+    avatarImage: "assets/avatars/reels.png",
     avatarColor: "#6fa1d3",
     preview: "Ролик для клиента набрал 2М просмотров",
     time: "10:47",
     unread: 1,
+    subscribers: 8700,
     link: "https://t.me/rosewood_str",
     ctaLabel: "Читать далее",
     messages: [
       {
         from: "them",
-        text: "Свежий кейс: ролик для клиента набрал 2М просмотров за 5 дней.",
+        text: "В данном канале собраны наши лучшие кейсы из сферы рилсмейкинга",
       },
-      { from: "them", text: "Разбор монтажа и сценария — в следующем посте." },
+      {
+        from: "them",
+        text: "Чтобы увидеть кейсы, перейдите в Telegram по кнопке ниже",
+      },
     ],
   },
   {
     id: "sites",
     type: "channel",
-    name: "Prism Site Cases",
-    avatarLetter: "S",
+    name: "Prism Sites",
+    avatarImage: "assets/avatars/site.png",
     avatarColor: "#6fa1d3",
     preview: "Лендинг поднял конверсию на 34%",
     time: "09:12",
     unread: 0,
+    subscribers: 5600,
     link: "https://t.me/rosewood_str",
     ctaLabel: "Читать далее",
     messages: [
       {
         from: "them",
-        text: "Кейс: новый лендинг поднял конверсию в заявки на 34%.",
+        text: "В данном канале собраны наши лучшие кейсы из сферы создания сайтов",
       },
-      { from: "them", text: "До/после и метрики — смотрите в закрепе канала." },
+      {
+        from: "them",
+        text: "Чтобы увидеть кейсы, перейдите в Telegram по кнопке ниже",
+      },
     ],
   },
   {
     id: "jacob",
     type: "person",
-    name: "CEO Jacob",
-    avatarLetter: "J",
+    name: "Якуб Эльдарович",
+    avatarImage: "assets/avatars/jacob.jpg",
     avatarColor: "#6fa1d3",
     preview: "Давайте обсудим ваш проект",
     time: "08:30",
     unread: 0,
     link: "https://t.me/rosewood_str",
     messages: [
-      { from: "them", text: "Привет! Я Джейкоб, руковожу Prism." },
+      { from: "them", text: "Я владелец агентства." },
       {
         from: "them",
-        text: "Расскажите о задаче — предложу трек и стоимость лично.",
+        text: "Обращайтесь ко мне с любым вопросом и предложением, я отвечаю всем",
       },
-      { from: "me", text: "Отлично, напишу детали" },
+      {
+        from: "them",
+        text: "Напишите мне кодовое слово 'РАЗБОР' и получите бесплатный созвон с личной консультацией",
+      },
+      {
+        from: "them",
+        text: "Для перехода на мой Telegram используйте кнопку ниже",
+      },
     ],
   },
 ];

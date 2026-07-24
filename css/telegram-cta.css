@@ -322,7 +322,6 @@
   flex-direction: column;
   gap: 10px;
   scrollbar-width: none;
-  background-image: radial-gradient(var(--glass-border) 1px, transparent 1px);
   background-size: 18px 18px;
   background-position: -9px -9px;
 }
@@ -485,4 +484,30 @@
   .tg-back {
     display: flex;
   }
+}
+.tg-chat-row3 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.tg-chat-subscribers {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.tg-chat-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.tg-conv-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
 }

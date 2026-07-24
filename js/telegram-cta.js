@@ -1,8 +1,3 @@
-// ==========================================================================
-// TELEGRAM CTA — renders the chat list and active conversation from
-// TELEGRAM_CHATS (js/telegram-data.js), wires up chat switching, the
-// mobile back button, and the message-input-field Telegram redirect.
-// ==========================================================================
 (function initTelegramCta() {
   "use strict";
 
@@ -13,11 +8,19 @@
   const inputBar = document.getElementById("tgInputBar");
   const convAvatar = document.getElementById("tgConvAvatar");
   const convName = document.getElementById("tgConvName");
+  const convStatus = document.getElementById("tgConvStatus");
 
   if (!tgWindow || !chatsEl || typeof TELEGRAM_CHATS === "undefined") return;
   if (!TELEGRAM_CHATS.length) return;
 
   let activeId = TELEGRAM_CHATS[0].id;
+
+  function formatSubscribers(num) {
+    if (!num) return "";
+    if (num >= 1000000) return (num / 1000000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "K";
+    return num.toString();
+  }
 
   function renderChatList() {
     chatsEl.innerHTML = TELEGRAM_CHATS.map((chat) => {
@@ -26,9 +29,15 @@
         chat.unread > 0
           ? `<span class="tg-chat-badge">${chat.unread}</span>`
           : "";
+      const subscriberInfo = chat.subscribers
+        ? `<span class="tg-chat-subscribers">${formatSubscribers(chat.subscribers)}</span>`
+        : "";
+      const avatarContent = chat.avatarImage
+        ? `<img src="${chat.avatarImage}" alt="" class="tg-chat-avatar-img" />`
+        : chat.avatarLetter;
       return `
         <button class="tg-chat-item${activeClass}" data-chat-id="${chat.id}" type="button">
-          <span class="tg-chat-avatar" style="--chat-color:${chat.avatarColor}">${chat.avatarLetter}</span>
+          <span class="tg-chat-avatar" style="--chat-color:${chat.avatarColor}">${avatarContent}</span>
           <span class="tg-chat-meta">
             <span class="tg-chat-row1">
               <span class="tg-chat-name">${chat.name}</span>
@@ -38,6 +47,7 @@
               <span class="tg-chat-preview">${chat.preview}</span>
               ${badge}
             </span>
+            ${subscriberInfo ? `<span class="tg-chat-row3">${subscriberInfo}</span>` : ""}
           </span>
         </button>
       `;
@@ -46,10 +56,22 @@
 
   function renderConversation(chat) {
     if (convAvatar) {
-      convAvatar.textContent = chat.avatarLetter;
-      convAvatar.style.setProperty("--chat-color", chat.avatarColor);
+      if (chat.avatarImage) {
+        convAvatar.innerHTML = `<img src="${chat.avatarImage}" alt="" class="tg-conv-avatar-img" />`;
+      } else {
+        convAvatar.textContent = chat.avatarLetter;
+        convAvatar.style.setProperty("--chat-color", chat.avatarColor);
+      }
     }
     if (convName) convName.textContent = chat.name;
+
+    if (convStatus) {
+      if (chat.subscribers) {
+        convStatus.textContent = `${formatSubscribers(chat.subscribers)} подписчиков`;
+      } else {
+        convStatus.textContent = "в сети";
+      }
+    }
 
     if (messagesEl) {
       messagesEl.innerHTML = chat.messages
@@ -92,6 +114,7 @@
     const chat = TELEGRAM_CHATS.find((c) => c.id === id);
     if (!chat) return;
     activeId = id;
+    chat.unread = 0;
     renderChatList();
     renderConversation(chat);
   }
